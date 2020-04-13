@@ -9,6 +9,12 @@ const xStorage = {
 	setItem(key, val, expired) {
 		let time = null;
 		if (expired != null) {
+			if (typeof(expired) == "number") {
+				let newDate = new Date();
+				let overdueDate = new Date();
+				overdueDate.setTime(newDate.getTime() + expired)
+				expired = overdueDate.timeFormat("yyyy-MM-dd HH:mm:ss")
+			}
 			expired = expired.replace(/-/g, ":").replace(" ", ":");
 			expired = expired.split(":");
 			time = new Date(
@@ -34,16 +40,24 @@ const xStorage = {
 	getItem(key) {
 		try {
 			const item = JSON.parse(localStorage.getItem(key));
-			if (item.expired == null) {
-				return item.data;
+			if (item) {
+				if (key == "token") {
+					if (item.expired == null) {
+						return item.data;
+					}
+					if (new Date(item.expired) > new Date()) {
+						return item.data;
+					} else {
+						return 403
+					}
+				} else {
+					return item
+				}
 			}
-			if (new Date(item.expired) > new Date()) {
-				return item.data;
-			}
+			return null;
 		} catch {
 			console.log("localStorage移除Key出错")
 		}
-		return null;
 	},
 
 	/**
@@ -57,7 +71,34 @@ const xStorage = {
 
 export default {
 	install: Vue => {
-			Vue.prototype.$xStorage = xStorage
+		Vue.prototype.$xStorage = xStorage
+		// Vue.prototype.$E = new Vue(); $emit提交 $on 处理
 		//---------全局方法 ---------------//
+		Date.prototype.timeFormat = function(format) {
+			let time = this;
+			let o = {
+				"M+": time.getMonth() + 1,
+				"d+": time.getDate(),
+				"H+": time.getHours(),
+				"m+": time.getMinutes(),
+				"s+": time.getSeconds(),
+				"q+": Math.floor((time.getMonth() + 3) / 3), //季度
+				"f+": time.getMilliseconds() //毫秒
+			};
+			if (/(y+)/.test(format))
+				format = format
+				.replace(RegExp.$1, time.getFullYear() + "")
+				.substr(4 - RegExp.$1.length);
+			for (let k in o) {
+				if (new RegExp("(" + k + ")").test(format))
+					format = format.replace(
+						RegExp.$1,
+						RegExp.$1.length == 1 ?
+						o[k] :
+						("00" + o[k]).substr(("" + o[k]).length)
+					);
+			}
+			return format;
+		};
 	}
 }

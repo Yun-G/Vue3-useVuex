@@ -1,13 +1,34 @@
 //在这里配置路由页面
-import Home from '../views/main/Index'
-
 const routes = [{
-	path: '/',
-	name: 'home',
-	component: Home,
-}, {
-	path: "/login",
-	name: "logn",
-	component: () => import('../views/login/Login')
-}]
+		path: '/',
+		component: resolve => require(['../views/index/index'], resolve),
+		redirect: 'login',
+		children: [{
+				path: 'login',
+				name: 'login',
+				component: resolve => require(['../views/index/signIn'], resolve),
+			},
+			{
+				path: 'register',
+				name: 'register',
+				component: resolve => require(['../views/index/signUp'], resolve),
+			},
+			{
+				path: 'forgetpw',
+				name: 'forgetpw',
+				component: resolve => require(['../views/index/forgetPassword'], resolve),
+			}
+
+		]
+	},
+	{
+		path: "/404",
+		name: "notFound",
+		component: resolve => require(['../views/error/404'], resolve),
+	},
+	{
+		path: "*", // 此处需特别注意置于最底部
+		redirect: "/404"
+	}
+]
 export default routes
