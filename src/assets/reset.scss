@@ -7,28 +7,34 @@
 	padding: 0;
 	outline: none;
 }
-	//滚动条
-	*::-webkit-scrollbar {
-		background: #fff;
-		width: 5px;
-	}
-	*::-webkit-scrollbar-track {
-		background: #fff;
-		width: 5px;
-	}
-	*::-webkit-scrollbar-thumb {
-		background: #fff;
-		width: 5px;
-	}
-	*:hover::-webkit-scrollbar {
-		background: #eee;
-	}
-	*:hover::-webkit-scrollbar-track {
-		background: #eee;
-	}
-	*:hover::-webkit-scrollbar-thumb {
-		background: #ddd;
-	}
+*,
+:after,
+:before {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+//滚动条
+*::-webkit-scrollbar {
+	background: #fff;
+	width: 5px;
+}
+*::-webkit-scrollbar-track {
+	background: #fff;
+	width: 5px;
+}
+*::-webkit-scrollbar-thumb {
+	background: #fff;
+	width: 5px;
+}
+*:hover::-webkit-scrollbar {
+	background: #eee;
+}
+*:hover::-webkit-scrollbar-track {
+	background: #eee;
+}
+*:hover::-webkit-scrollbar-thumb {
+	background: #ddd;
+}
 
 html,
 body {
@@ -38,7 +44,6 @@ body {
 
 #app {
 	height: 100%;
-	overflow-y: auto;
 }
 
 h1,
@@ -88,4 +93,3 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
 	-moz-appearance: textfield;
 }
-

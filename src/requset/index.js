@@ -28,17 +28,17 @@ const tip = (msg,
  * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
  */
 const toLogin = async (text) => {
-	if (!router.currentRoute.query.redirect) {
-		tip(text, 'error');
-		setTimeout(() => {
+	tip(text, 'error');
+	setTimeout(() => {
+		if (!router.currentRoute.query.redirect) {
 			router.replace({
 				path: '/login',
 				query: {
 					redirect: router.currentRoute.fullPath
 				}
 			});
-		}, 1000);
-	}
+		}
+	}, 1000);
 }
 
 /** 
@@ -70,12 +70,11 @@ const errorHandle = (status, other) => {
 	}
 }
 
-// 创建axios实例
-var instance = axios.create({
-	timeout: 1000 * 20
-});
-// 设置post请求头
-instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+// // 创建axios实例
+// var instance = axios.create({
+// 	timeout: 1000 * 20
+// });
+
 /** 
  * 请求拦截器 
  * 每次请求前，如果存在token则在请求头中携带token 
@@ -119,6 +118,7 @@ instance.interceptors.response.use(
 			return Promise.reject(response).catch(err => err);
 		} else {
 			// 处理断网的情况
+			tip("网络未连接", "info")
 		}
 	});
 
