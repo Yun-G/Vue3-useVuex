@@ -70,10 +70,10 @@ const errorHandle = (status, other) => {
 	}
 }
 
-// // 创建axios实例
-// var instance = axios.create({
-// 	timeout: 1000 * 20
-// });
+// 创建axios实例
+var instance = axios.create({
+	// timeout: 1000 * 20
+});
 
 /** 
  * 请求拦截器 
