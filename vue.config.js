@@ -1,16 +1,45 @@
 const path = require('path')
+const CompressionPlugin = require('compression-webpack-plugin')
+
+const cdn = {
+	js: [
+		'//cdn.bootcss.com/vue/2.6.10/vue.min.js',
+		'//cdn.bootcss.com/element-ui/2.12.0/index.js',
+		'//cdn.bootcss.com/vuex/3.0.1/vuex.min.js',
+		'//cdn.bootcss.com/axios/0.19.0/axios.min.js',
+		'//cdn.bootcdn.net/ajax/libs/vue-lazyload/1.3.3/vue-lazyload.js',
+		'//cdn.bootcdn.net/ajax/libs/core-js/2.6.5/core.min.js',
+		// '//cdn.bootcdn.net/ajax/libs/vue-router/3.0.3/vue-router.min.js',
+	],
+};
 module.exports = {
 	// webpack配置
-	chainWebpack: () => {},
-	configureWebpack: {
+	chainWebpack: (config) => {
+		if (process.env.NODE_ENV === 'production') {
+			config.plugin('html').tap(args => {
+				args[0].cdn = cdn;
+				return args;
+			});
+		}
+	},
+	configureWebpack: (config) => {
 		//排除第三方库 减少打包体积
-		externals: {
-			// 'element-ui': 'ELEMENT',
-			// 'vue': 'Vue',
-			// 'axios': 'axios',
-			// 'vuex': 'Vuex',
-			// 'qrcodejs2': 'QRCode',
-			// 'vue-router': 'VueRouter',
+		if (process.env.NODE_ENV === 'production') {
+			config.externals = {
+				'element-ui': 'ELEMENT',
+				'vue': 'Vue',
+				'axios': 'axios',
+				'vuex': 'Vuex',
+				'vue-lazyload': 'VueLazyload',
+				'core-js': 'core',
+				// 'vue-router': 'VueRouter',
+			};
+			// config['plugins'].push(new BundleAnalyzerPlugin());
+			config['plugins'].push(new CompressionPlugin({
+				test: /\.js$|\.html$|.\css/,
+				threshold: 1024 * 100,
+				deleteOriginalAssets: false
+			}));
 		}
 	},
 	// 生产环境是否生成 sourceMap 文件

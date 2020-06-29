@@ -3,8 +3,8 @@
 		<div class="warp">
 			<p>您访问的页面不存在</p>
 			<div class="link">
-				<a @click="$router.replace('/index')">返回首页</a>
-				<a @click="$router.go(-1)">返回上一页</a>
+				<a @click="toHome">返回首页</a>
+				<a @click="toLast">返回上一页</a>
 			</div>
 		</div>
 		<div class="bg-img"></div>
@@ -16,6 +16,20 @@ export default {
 	data() {
 		return {};
 	},
+	methods: {
+		toHome() {
+			this.$router.push({
+				path: '/'
+			});
+		},
+		toLast() {
+			if (window.history.length == 2) {
+				this.toHome();
+			} else {
+				this.$router.go(-1);
+			}
+		}
+	}
 };
 </script>
 

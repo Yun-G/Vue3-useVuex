@@ -6,10 +6,13 @@ import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import http from '@/requset/api'// 接口对象
 import '@/assets/reset.scss'//重置默认样式
-import Var from "@/assets/publicMethods.js"//全局属性和方法
-
+import Var from "@/assets/common.js"//全局属性和方法
+import VueLazyload from 'vue-lazyload';
 Vue.use(Element)
 Vue.use(Var)
+Vue.use(VueLazyload,{
+	error: require('./assets/img/error.png') 
+})
 
 Vue.prototype.$http = http; // 将api挂载到vue的原型上
 
