@@ -2,8 +2,6 @@ const state = {
 	userInfo: {},
 	token: null,
 };
-// getters 从 store 中的 state 中派生出一些状态
-const getters = {};
 // actions
 const actions = {
 	setUserDate({ commit }, obj) {
@@ -26,7 +24,6 @@ const mutations = {
 export default {
 	namespaced: true,
 	state,
-	getters,
 	actions,
 	mutations
 };
